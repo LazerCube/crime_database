@@ -1,0 +1,22 @@
+{% load staticfiles %}
+{% extends "base/base.html" %}
+
+{% block content %}
+    <div class="title">
+        <h1>{{ title }}</h1>
+    </div>
+    <div class="card">
+        {% if title == 'login' %}
+            <form action='{% url 'accounts:login' %}' method="post">
+        {% else %}
+            <form action='{% url 'accounts:register' %}' method="post">
+        {% endif %}
+            <div class="card-content">
+                {% include "accounts/forms/form.html" %}
+            </div>
+            <div class="card-action">
+                <button class="btn btn-primary" type='submit'>Save Edits</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
