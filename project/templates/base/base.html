@@ -1,0 +1,39 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--head-->
+        {% block meta-head %}
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>web_application</title>
+        {% endblock %}
+        {% block styles-head %}
+            <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/stylesheets/bootstrap.min.css' %}"/>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+            <link rel="stylesheet" type="text/css" href="{% static 'base/stylesheets/base.css' %}"/>
+        {% endblock %}
+        {% block js-head %}
+            <script src="{% static 'base/javascripts/components/jquery/jquery.js' %}"/></script>
+            <script src="{% static 'bootstrap/javascripts/components/bootstrap.min.js' %}"/></script>
+            <script src="{% static 'base/javascripts/base.js' %}"/></script>
+        {% endblock %}
+        {% block extra-head %}{% endblock %}
+        <!--endhead-->
+    </head>
+
+
+    <body>
+        {% block body %}
+            {% include 'base/includes/header.html' %}
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+            {% include 'base/includes/footer.html' %}
+        {% endblock %}
+    </body>
+
+
+
+</html>
