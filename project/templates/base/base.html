@@ -16,7 +16,7 @@
         {% endblock %}
         {% block js-head %}
             <script src="{% static 'base/javascripts/components/jquery/jquery.js' %}"/></script>
-            <script src="{% static 'bootstrap/javascripts/components/bootstrap.min.js' %}"/></script>
+            <script src="{% static 'bootstrap/javascripts/bootstrap.min.js' %}"/></script>
             <script src="{% static 'base/javascripts/base.js' %}"/></script>
         {% endblock %}
         {% block extra-head %}{% endblock %}
@@ -26,13 +26,17 @@
 
     <body>
         {% block body %}
-            {% include 'base/includes/header.html' %}
+            {% block header %}
+                {% include 'base/includes/header.html' %}
+            {% endblock %}
             <div class="container">
                 {% block content %}{% endblock %}
             </div>
         {% endblock %}
     </body>
 
-    {% include 'base/includes/footer.html' %}
+    {% block footer %}
+        {% include 'base/includes/footer.html' %}
+    {% endblock %}
 
 </html>

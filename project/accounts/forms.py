@@ -8,43 +8,67 @@ class RegistrationForm(forms.ModelForm):
 
     email = forms.CharField(widget=forms.TextInput(
                                 attrs={
+                                'type': 'email',
+                                'class': 'form-control',
                                 'placeholder' : 'Email',
+                                'autocomplete' : 'off',
                                 }),
                                 max_length=255,
+                                label="Email",
                             )
 
     username = forms.CharField(widget=forms.TextInput(
                                 attrs={
+                                'type': 'text',
+                                'class': 'form-control',
                                 'placeholder' : 'Username',
+                                'autocomplete' : 'off',
                                 }),
                                 max_length=35,
+                                label="Username",
                             )
 
     first_name = forms.CharField(widget=forms.TextInput(
                                 attrs={
+                                'type': 'text',
+                                'class': 'form-control',
                                 'placeholder' : 'Forename',
+                                'autocomplete' : 'off',
                                 }),
                                 max_length=35,
+                                label="Forename",
                             )
 
     last_name = forms.CharField(widget=forms.TextInput(
                                 attrs={
+                                'type': 'text',
+                                'class': 'form-control',
                                 'placeholder' : 'Surname',
+                                'autocomplete' : 'off',
                                 }),
                                 max_length=35,
+                                label="Surname",
                             )
 
     password1 = forms.CharField(widget=forms.PasswordInput(
                             attrs={
+                                'type': 'password',
+                                'class': 'form-control',
                                 'placeholder' : 'Password',
-                                },
-                            ))
+                                'autocomplete' : 'off',
+                                }),
+                                label="Password",
+                            )
 
     password2 = forms.CharField(widget=forms.PasswordInput(
                             attrs={
+                                'type': 'password',
+                                'class': 'form-control',
                                 'placeholder' : 'Password (again)',
-                                },
-                            ))
+                                'autocomplete' : 'off',
+                                }),
+                                label="Password (again)",
+                            )
     class Meta:
         model = User
         fields = [  'email',
@@ -92,16 +116,24 @@ class AuthenticationForm(forms.Form):
 
     username = forms.CharField(widget=forms.TextInput(
                                 attrs={
-                                'placeholder' : 'Username',
+                                'type': 'text',
+                                'class': 'form-control',
+                                'placeholder' : 'Email',
+                                'autocomplete' : 'off',
                                 }),
                                 max_length=35,
+                                label="Email",
                             )
 
     password = forms.CharField(widget=forms.PasswordInput(
                             attrs={
+                                'type': 'password',
+                                'class': 'form-control',
                                 'placeholder' : 'Password',
-                                },
-                            ))
+                                'autocomplete' : 'off',
+                                }),
+                                label="Password",
+                            )
 
     class Meta:
         fields = ['username', 'password']

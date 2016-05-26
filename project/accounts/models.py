@@ -21,7 +21,7 @@ class UserManager(BaseUserManager):
         if not kwargs.get('last_name'):
             raise ValueError('Users must have a valid surname.')
 
-        validate_password(password)
+        #validate_password(password)
 
         user = self.model(
             email=self.normalize_email(email), username=kwargs.get('username'),

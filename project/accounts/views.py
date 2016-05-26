@@ -10,10 +10,10 @@ from django.http import HttpResponse
 def register(request):
     if not request.user.is_authenticated():
         title = 'register'
-        form = RegisterForm()
+        form = RegistrationForm()
 
         if request.method == 'POST':
-            form = RegisterForm(request.POST)
+            form = RegistrationForm(request.POST)
             if form.is_valid():
                 email = form.cleaned_data['email']
                 first_name = form.cleaned_data['first_name']
@@ -35,11 +35,11 @@ def register(request):
 
 def login(request):
     if not request.user.is_authenticated():
-        form = LoginForm()
+        form = AuthenticationForm()
         state = ''
         title = 'login'
         if request.method == 'POST':
-            form = LoginForm(request.POST)
+            form = AuthenticationForm(request.POST)
             if form.is_valid():
                 username = form.cleaned_data['username']
                 password = form.cleaned_data['password']
@@ -51,14 +51,13 @@ def login(request):
                         return HttpResponse('Logged In!!')
                     else:
                         state = "Your account is not active, please contact the administrator."
-
                 else:
                     state = "Your username and/or password were incorrect."
 
         context = {
                 'state': state,
                 'form': form,
-                'title':title,
+                'title': title,
         }
 
         return render(request, 'accounts/base.html', context)
@@ -68,4 +67,4 @@ def login(request):
 @login_required
 def logout(request):
     auth_logout(request)
-    return redirect('authenticate:login')
+    return redirect('accounts:login')
