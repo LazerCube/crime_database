@@ -29,40 +29,35 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, password, **kwargs):
+    def create_staff(self, email, password, **kwargs):
         user = self.create_user(email, password, **kwargs)
+        user.staff = True
+        user.save()
+        return user
 
+    def create_superuser(self, email, password, **kwargs):
+        user = self.create_staff(email, password, **kwargs)
         user.is_admin = True
         user.save()
-
         return user
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, max_length=255) #Needs to be unique for login
-    username = models.CharField(max_length=35, unique=True) #Needs to be unique for URL
-
-    first_name = models.CharField(max_length=35)
-    last_name = models.CharField(max_length=35)
 
     is_admin = models.BooleanField(default=False) # Are they an admin?
+    is_staff = models.BooleanField(default=False) # Are they staff?
+
     created_at = models.DateTimeField(auto_now_add=True, editable=False) #When object was created
     updated_at = models.DateTimeField(auto_now=True) #When object was last updated
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email' #Djangos built in user requires a username. This is used to log in the user.
-    REQUIRED_FIELDS = ['username'] #uses username in URL so we must have it.
 
     def __str__(self):
-        return self.username
+        return self.email
 
-    def get_full_name(self):
-        return ' '.join([self.first_name, self.last_name])
 
-    def get_short_name(self):
-        return self.first_name
 
 def get_anonymous_user_instance(User):
-    return User(username='Anonymous',
-                first_name='Anonymous',
-                last_name='User')
+    return User()

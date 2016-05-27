@@ -20,38 +20,38 @@ class RegistrationForm(forms.ModelForm):
                                 label="Email",
                             )
 
-    username = forms.CharField(widget=forms.TextInput(
-                                attrs={
-                                'type': 'text',
-                                'class': 'form-control',
-                                'placeholder' : 'Username',
-                                'autocomplete' : 'off',
-                                }),
-                                max_length=35,
-                                label="Username",
-                            )
+    # first_name = forms.CharField(widget=forms.TextInput(
+    #                             attrs={
+    #                             'type': 'text',
+    #                             'class': 'form-control',
+    #                             'placeholder' : 'Forename',
+    #                             'autocomplete' : 'off',
+    #                             }),
+    #                             max_length=35,
+    #                             label="Forename",
+    #                         )
+    #
+    # last_name = forms.CharField(widget=forms.TextInput(
+    #                             attrs={
+    #                             'type': 'text',
+    #                             'class': 'form-control',
+    #                             'placeholder' : 'Surname',
+    #                             'autocomplete' : 'off',
+    #                             }),
+    #                             max_length=35,
+    #                             label="Surname",
+    #                         )
 
-    first_name = forms.CharField(widget=forms.TextInput(
-                                attrs={
-                                'type': 'text',
-                                'class': 'form-control',
-                                'placeholder' : 'Forename',
-                                'autocomplete' : 'off',
-                                }),
-                                max_length=35,
-                                label="Forename",
-                            )
-
-    last_name = forms.CharField(widget=forms.TextInput(
-                                attrs={
-                                'type': 'text',
-                                'class': 'form-control',
-                                'placeholder' : 'Surname',
-                                'autocomplete' : 'off',
-                                }),
-                                max_length=35,
-                                label="Surname",
-                            )
+    code = forms.CharField(widget=forms.TextInput(
+                                    attrs={
+                                    'type': 'text',
+                                    'class': 'form-control',
+                                    'placeholder' : 'Establishment Code',
+                                    'autocomplete' : 'off',
+                                    }),
+                                    max_length=6,
+                                    label="Establishment Code",
+                                )
 
     password1 = forms.CharField(widget=forms.PasswordInput(
                             attrs={
@@ -75,18 +75,9 @@ class RegistrationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [  'email',
-                    'username',
-                    'first_name',
-                    'last_name',
                     'password1',
                     'password2',
                 ]
-
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        if User.objects.filter(username=username).exists():
-            raise forms.ValidationError('The Username, %s is already in use.' % username)
-        return username
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -98,7 +89,7 @@ class RegistrationForm(forms.ModelForm):
         """
         Checks if password1 and password2 are the same.
         """
-        cleaned_data = super(RegistrationForm, self).clean()
+        cleaned_data = super(StaffRegistrationForm, self).clean()
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError("Passwords don't match. Please enter both fields again.")

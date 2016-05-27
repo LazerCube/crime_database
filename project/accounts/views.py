@@ -9,7 +9,7 @@ from django.http import HttpResponse
 
 def register(request):
     if not request.user.is_authenticated():
-        title = 'register'
+        title = 'staff register'
         form = RegistrationForm(request.POST or None)
         if request.POST and form.is_valid():
             user = form.save()
