@@ -1,5 +1,6 @@
 from django import forms
 from accounts.models import User
+from management.models import Students
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
@@ -42,15 +43,15 @@ class RegistrationForm(forms.ModelForm):
     #                             label="Surname",
     #                         )
 
-    code = forms.CharField(widget=forms.TextInput(
+    account_code = forms.CharField(widget=forms.TextInput(
                                     attrs={
                                     'type': 'text',
                                     'class': 'form-control',
-                                    'placeholder' : 'Establishment Code',
+                                    'placeholder' : 'Code',
                                     'autocomplete' : 'off',
                                     }),
                                     max_length=6,
-                                    label="Establishment Code",
+                                    label="Code",
                                 )
 
     password1 = forms.CharField(widget=forms.PasswordInput(
@@ -77,6 +78,7 @@ class RegistrationForm(forms.ModelForm):
         fields = [  'email',
                     'password1',
                     'password2',
+                    'account_code',
                 ]
 
     def clean_email(self):
@@ -85,11 +87,20 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError('The Email, %s is already in use.' % email)
         return email
 
+    def clean_account_code(self):
+        account_code = self.cleaned_data['account_code']
+        student = Students.objects.get(student_id=account_code)
+        if not Students.objects.filter(student_id=account_code).exists():
+            raise forms.ValidationError("Student code doesn't exists.")
+        if not student.account is None:
+            raise forms.ValidationError("Student already has an account")
+        return account_code
+
     def clean(self):
         """
         Checks if password1 and password2 are the same.
         """
-        cleaned_data = super(StaffRegistrationForm, self).clean()
+        cleaned_data = super(RegistrationForm, self).clean()
         if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
             if self.cleaned_data['password1'] != self.cleaned_data['password2']:
                 raise forms.ValidationError("Passwords don't match. Please enter both fields again.")
@@ -99,8 +110,10 @@ class RegistrationForm(forms.ModelForm):
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password2"])
+        student = Students.objects.get(student_id=self.cleaned_data["account_code"])
         if commit:
             user.save()
+            student.add_account(user)
         return user
 
 
