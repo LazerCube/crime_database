@@ -3,8 +3,6 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
-from django.contrib.auth.password_validation import validate_password
-
 from django.db import models
 
 class UserManager(BaseUserManager):
@@ -20,8 +18,6 @@ class UserManager(BaseUserManager):
 
         if not kwargs.get('last_name'):
             raise ValueError('Users must have a valid surname.')
-
-        #validate_password(password)
 
         user = self.model(
             email=self.normalize_email(email), username=kwargs.get('username'),

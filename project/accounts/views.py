@@ -10,19 +10,11 @@ from django.http import HttpResponse
 def register(request):
     if not request.user.is_authenticated():
         title = 'register'
-        form = RegistrationForm()
-
-        if request.method == 'POST':
-            form = RegistrationForm(request.POST)
-            if form.is_valid():
-                email = form.cleaned_data['email']
-                first_name = form.cleaned_data['first_name']
-                last_name = form.cleaned_data['last_name']
-                username = form.cleaned_data['username']
-                password = form.cleaned_data['password1']
-
-                user = User.objects.create_user(email, password, username=username, first_name=first_name, last_name=last_name)
-                return HttpResponse('New user created!!!!')
+        form = RegistrationForm(request.POST or None)
+        if request.POST and form.is_valid():
+            user = form.save()
+            if user:
+                return HttpResponse('REGISTED!!!')
 
         context = {
                 'form': form,
@@ -35,27 +27,15 @@ def register(request):
 
 def login(request):
     if not request.user.is_authenticated():
-        form = AuthenticationForm()
-        state = ''
+        form = AuthenticationForm(request.POST or None)
         title = 'login'
-        if request.method == 'POST':
-            form = AuthenticationForm(request.POST)
-            if form.is_valid():
-                username = form.cleaned_data['username']
-                password = form.cleaned_data['password']
-                user = authenticate(username=username, password=password)
-
-                if user is not None:
-                    if user.is_active:
-                        auth_login(request, user)
-                        return HttpResponse('Logged In!!')
-                    else:
-                        state = "Your account is not active, please contact the administrator."
-                else:
-                    state = "Your username and/or password were incorrect."
+        if request.POST and form.is_valid():
+            user = form.login(request)
+            if user:
+                auth_login(request, user)
+                return HttpResponse('Logged In!!')
 
         context = {
-                'state': state,
                 'form': form,
                 'title': title,
         }

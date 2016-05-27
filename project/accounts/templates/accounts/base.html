@@ -1,32 +1,35 @@
 {% extends "base/base.html" %}
 {% load staticfiles %}
 
-{% block header %}
-{% endblock %}
+{% block body %}
+    <body class="pattern-dark">
+        <div class="container">
+            {% block content %}
+                <div class="row vertical-center">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <div class="well">
+                            {% if title == 'login' %}
+                                <form action='{% url 'accounts:login' %}' method="post">
+                            {% else %}
+                                <form action='{% url 'accounts:register' %}' method="post">
+                            {% endif %}
+                                <fieldset>
+                                    <legend class="text-capitalize">{{ title }}</legend>
+                                    {% include "accounts/forms/form.html" %}
 
-{% block content %}
-    <div class="row" style="margin-top:55px;">
-        <div class="col-lg-4 col-lg-offset-4 col-sm-6 col-sm-offset-3">
-            <div class="well">
-                {% if title == 'login' %}
-                    <form action='{% url 'accounts:login' %}' method="post">
-                {% else %}
-                    <form action='{% url 'accounts:register' %}' method="post">
-                {% endif %}
-                    <fieldset>
-                        <legend class="text-capitalize">{{ title }}</legend>
-                        {% include "accounts/forms/form.html" %}
-
-                        {% if title == 'login' %}
-                            <button class="btn btn-primary btn-block" type='submit'>Login</button>
-                            <a href="{% url 'accounts:register' %}" class="">Click Here to register</a>
-                        {% else %}
-                            <button class="btn btn-primary btn-block" type='submit'>Register</button>
-                            <a href="{% url 'accounts:login' %}" class="">Already have an account?</a>
-                        {% endif %}
-                    </fieldset>
-                </form>
-            </div>
+                                    {% if title == 'login' %}
+                                        <button class="btn btn-primary btn-block" type='submit'>Login</button>
+                                        <a href="{% url 'accounts:register' %}" class="">Click Here to register</a>
+                                    {% else %}
+                                        <button class="btn btn-primary btn-block" type='submit'>Register</button>
+                                        <a href="{% url 'accounts:login' %}" class="">Already have an account?</a>
+                                    {% endif %}
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
         </div>
-    </div>
+    </body>
 {% endblock %}
