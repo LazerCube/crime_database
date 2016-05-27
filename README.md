@@ -1,3 +1,1 @@
-# Website to display Crime data from the US
-
- 
+# Education Management Website Application
