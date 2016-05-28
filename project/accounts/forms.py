@@ -208,7 +208,6 @@ class EditForm(forms.ModelForm):
 
     def clean_new_email(self):
         email = self.cleaned_data['new_email']
-        print("email")
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('The Email, %s is already in use.' % email)
         return email
