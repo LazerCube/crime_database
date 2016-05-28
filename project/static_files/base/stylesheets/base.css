@@ -41,3 +41,9 @@
         width:100%;
     }
 }
+
+/*Allows alerts to go under navbar*/
+
+.alert{
+    margin-top: -21px;
+}

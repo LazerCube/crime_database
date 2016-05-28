@@ -165,15 +165,15 @@ class EditForm(forms.ModelForm):
     Form for editting a user.
     """
 
-    email = forms.CharField(widget=forms.TextInput(
+    new_email = forms.CharField(widget=forms.TextInput(
                                     attrs={
                                     'type': 'email',
                                     'class': 'form-control',
-                                    'placeholder' : 'Current / New Email',
+                                    'placeholder' : 'New Email',
                                     'autocomplete' : 'off',
                                     }),
                                     max_length=255,
-                                    label="Current / New Email",
+                                    label="New Email",
                                     required=False,
                                 )
 
@@ -201,16 +201,16 @@ class EditForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = [  'email',
+        fields = [  'new_email',
                     'password1',
                     'password2',
                 ]
 
-    def clean_email(self):
-        email = self.cleaned_data['email']
+    def clean_new_email(self):
+        email = self.cleaned_data['new_email']
+        print("email")
         if User.objects.filter(email=email).exists():
-            if not email == self.instance.email:
-                raise forms.ValidationError('The Email, %s is already in use.' % email)
+            raise forms.ValidationError('The Email, %s is already in use.' % email)
         return email
 
     def clean(self):
@@ -218,20 +218,22 @@ class EditForm(forms.ModelForm):
         Checks if password1 and password2 are the same.
         """
         cleaned_data = super(EditForm, self).clean()
-        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
-            if self.cleaned_data['password1'] or self.cleaned_data['password2']:
-                if self.cleaned_data['password1'] != self.cleaned_data['password2']:
+
+        if 'password1' in cleaned_data and 'password2' in cleaned_data:
+            if cleaned_data['password1'] or cleaned_data['password2']:
+                if cleaned_data['password1'] != cleaned_data['password2']:
                     raise forms.ValidationError("Passwords don't match. Please enter both fields again.")
-                validate_password(self.cleaned_data.get('password2'), self.instance)
-        return self.cleaned_data
+                validate_password(cleaned_data['password2'], self.instance)
+        return cleaned_data
 
     def save(self, commit=True):
         user = super(EditForm, self).save(commit=False)
         password = self.cleaned_data["password2"]
-        email = self.cleaned_data["email"]
+        new_email = self.cleaned_data["new_email"]
         if password:
             user.set_password(password)
+        if new_email:
+            user.email = new_email
         if commit:
-            if not email == self.instance.email:
-                user.save()
+            user.save()
         return user

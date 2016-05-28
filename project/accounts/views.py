@@ -5,13 +5,13 @@ from django.contrib.auth.decorators import login_required
 from accounts.models import User
 from accounts.forms import AuthenticationForm, RegistrationForm, EditForm
 
+
 @login_required
 def account(request):
     user = get_object_or_404(User,pk=request.user.pk)
     form = EditForm(request.POST or None, instance=user)
     if request.POST and form.is_valid():
         user = form.save()
-        return redirect('accounts:view')
 
     context = {
             'user': user,
