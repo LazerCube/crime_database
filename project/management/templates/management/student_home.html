@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <h1 id="typography">Student Home</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>{{ student }}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">My Student Information</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        <li><label>Name:</label> {{ student }}</li>
+                        <li><label>Student code:</label> {{ student.student_id }}</li>
+                        <li><label>Date of birth:</label> {{ student.date_of_birth }}</li>
+                        <li>
+                            <label>Associated account:</label>
+                            <a href="{% url 'accounts:view' %}">
+                                {{ student.account }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

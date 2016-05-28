@@ -34,7 +34,7 @@ class Students(models.Model):
         verbose_name_plural = ("Students")
 
     def __str__(self):
-        return ' '.join([self.student_id, self.get_full_name()])
+        return self.get_full_name()
 
     def get_full_name(self):
         return ' '.join([self.first_name, self.last_name])
