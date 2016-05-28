@@ -1,0 +1,62 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <h1 id="typography">Account</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>{{ user }}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Your Information</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-unstyled">
+                        <li><label>Email:</label> {{ user.email }}</li>
+                        <li><label>Password:</label> ●●●●●●●●●●</li>
+                        <li><label>Created:</label> {{ user.created_at }}</li>
+                        <li><label>Last Updated:</label> {{ user.updated_at }}</li>
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal">
+                        Edit
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Edit Information</h4>
+                                </div>
+                                <form action='{% url 'accounts:view' %}' method="post">
+                                    <fieldset>
+                                        <div class="modal-body">
+                                            {% include "accounts/forms/form.html" %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button class="btn btn-primary" type='submit'>Save changes</button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

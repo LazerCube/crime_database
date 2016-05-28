@@ -10,10 +10,12 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 class StudentsManager(models.Manager):
     def create(self, f_name, l_name, dob=None):
-        student = self.model(first_name=f_name,
-                            last_name=l_name,
-                            date_of_birth=dob,
-                            )
+        student = self.model(
+            first_name=f_name,
+            last_name=l_name,
+            date_of_birth=dob,
+        )
+
         student.save()
         return student
 
@@ -43,7 +45,6 @@ class Students(models.Model):
     def add_account(self, account):
         if self.account is None:
             self.account = account
-        print("ADD ACCOUNT SAVE!!!")
         self.save()
 
     def save(self):
@@ -54,4 +55,23 @@ class Students(models.Model):
                 self.student_id = id_generator()
         super(Students, self).save()
 
-#class classGroup(models.Model):
+class TutorGroups(models.Model):
+    tutor_id = models.CharField(max_length=8)
+    description = models.TextField(max_length=255, null=True,
+                                  blank=False, default="No description given.")
+
+class Units(models.Model):
+    unit_code = models.CharField(max_length=35)
+    name = models.CharField(max_length=255)
+    description = models.TextField("Description", max_length=255, null=True,
+                                    blank=False, default="No description given.")
+
+# class Grades(models.Model):
+#     pass
+
+class Enrollment(models.Model):
+    student = models.ForeignKey(Students)
+    tutor = models.ForeignKey(TutorGroups)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False) #When object was created
+    updated_at = models.DateTimeField(auto_now=True) #When object was last updated
+    #grades = models.ForeignKey(Grades)

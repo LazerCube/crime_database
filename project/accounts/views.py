@@ -3,9 +3,21 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.decorators import login_required
 
 from accounts.models import User
-from accounts.forms import AuthenticationForm, RegistrationForm
+from accounts.forms import AuthenticationForm, RegistrationForm, EditForm
 
-from django.http import HttpResponse
+@login_required
+def account(request):
+    user = get_object_or_404(User,pk=request.user.pk)
+    form = EditForm(request.POST or None, instance=user)
+    if request.POST and form.is_valid():
+        user = form.save()
+        return redirect('accounts:view')
+
+    context = {
+            'user': user,
+            'form': form,
+    }
+    return render(request, 'accounts/view.html', context)
 
 def register(request):
     if not request.user.is_authenticated():
@@ -14,7 +26,7 @@ def register(request):
         if request.POST and form.is_valid():
             user = form.save()
             if user:
-                return HttpResponse('REGISTED!!!')
+                return redirect('accounts:login')
 
         context = {
                 'form': form,
@@ -23,7 +35,7 @@ def register(request):
 
         return render(request, 'accounts/base.html', context)
     else:
-        return HttpResponse('You are already logged in')
+        return redirect('accounts:view')
 
 def login(request):
     if not request.user.is_authenticated():
@@ -32,8 +44,9 @@ def login(request):
         if request.POST and form.is_valid():
             user = form.login(request)
             if user:
+                print("USER")
                 auth_login(request, user)
-                return HttpResponse('Logged In!!')
+                return redirect('accounts:view')
 
         context = {
                 'form': form,
@@ -42,7 +55,7 @@ def login(request):
 
         return render(request, 'accounts/base.html', context)
     else:
-        return HttpResponse('You are already logged in')
+        return redirect('accounts:view')
 
 @login_required
 def logout(request):
