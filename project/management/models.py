@@ -1,12 +1,8 @@
 from __future__ import unicode_literals
 from django.db import models
 
+from accounts.models import id_generator
 from accounts.models import User
-
-import string, random
-
-def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))
 
 class StudentsManager(models.Manager):
     def create(self, f_name, l_name, dob=None):

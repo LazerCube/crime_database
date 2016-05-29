@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="page-header">
-                <h1 id="typography">Student Home</h1>
+                <h1 id="typography">Student Information</h1>
             </div>
         </div>
     </div>
@@ -18,7 +18,11 @@
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">My Student Information</h3>
+                    {% if request.user.is_admin %}
+                        <h3 class="panel-title">Student Data</h3>
+                    {% else %}
+                        <h3 class="panel-title">My Student Information</h3>
+                    {% endif %}
                 </div>
                 <div class="panel-body">
                     <ul class="list-unstyled">
@@ -27,7 +31,11 @@
                         <li><label>Date of birth:</label> {{ student.date_of_birth }}</li>
                         <li>
                             <label>Associated account:</label>
-                            <a href="{% url 'accounts:view' %}">
+                            {% if request.user.pk != student.account.key.pk %}
+                                <a href="{% url 'accounts:student_account' student.account.key %}">
+                            {% else %}
+                                <a href="{% url 'accounts:view' %}">
+                            {% endif %}
                                 {{ student.account }}
                             </a>
                         </li>

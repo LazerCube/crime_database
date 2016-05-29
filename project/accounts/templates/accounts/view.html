@@ -5,7 +5,11 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="page-header">
-                <h1 id="typography">Account</h1>
+                {% if request.user.pk != user.pk %}
+                    <h1 id="typography">Account</h1>
+                {% else %}
+                    <h1 id="typography">My Account</h1>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -18,7 +22,7 @@
         <div class="col-lg-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">My Account Information</h3>
+                    <h3 class="panel-title">Account Information</h3>
                 </div>
                 <div class="panel-body">
                     <ul class="list-unstyled">
@@ -41,7 +45,11 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                     <h4 class="modal-title" id="myModalLabel">Edit Information</h4>
                                 </div>
-                                <form action='{% url 'accounts:view' %}' method="post">
+                                {% if request.user.is_admin %}
+                                    <form action='{% url 'accounts:student_account' user.key %}' method="post">
+                                {% else %}
+                                    <form action='{% url 'accounts:view' %}' method="post">
+                                {% endif %}
                                     <fieldset>
                                         <div class="modal-body">
                                             {% include "accounts/forms/form.html" %}

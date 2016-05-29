@@ -1,7 +1,10 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django_tables2 import RequestConfig
 
 from management.models import Students
+from management.tables import StudentsTable
 
 @login_required
 def home(request):
@@ -11,3 +14,30 @@ def home(request):
             'student': student,
     }
     return render(request, 'management/student_home.html', context)
+
+@login_required
+def admin(request):
+    if request.user.is_admin:
+        table = StudentsTable(Students.objects.all())
+        RequestConfig(request, paginate={"per_page": 25}).configure(table)
+
+        context = {
+            'table': table,
+        }
+
+        return render(request, 'management/admin.html', context)
+    else:
+        raise PermissionDenied
+
+@login_required
+def student(request, student):
+    if request.user.is_admin:
+        student = get_object_or_404(Students, student_id=student)
+
+        context = {
+            'student': student,
+        }
+
+        return render(request, 'management/student_home.html', context)
+    else:
+        raise PermissionDenied

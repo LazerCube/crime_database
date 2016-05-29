@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from accounts.models import User
 from accounts.forms import AuthenticationForm, RegistrationForm, EditForm
 
+from management.models import Students
+
 
 @login_required
 def account(request):
@@ -18,6 +20,22 @@ def account(request):
             'form': form,
     }
     return render(request, 'accounts/view.html', context)
+
+@login_required
+def student_account(request, account):
+    if request.user.is_admin:
+        user = get_object_or_404(User,key=account)
+        form = EditForm(request.POST or None, instance=user)
+        if request.POST and form.is_valid():
+            user = form.save()
+
+        context = {
+                'user': user,
+                'form': form,
+        }
+        return render(request, 'accounts/view.html', context)
+    else:
+        return redirect('accounts:view')
 
 def register(request):
     if not request.user.is_authenticated():
