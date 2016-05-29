@@ -4,6 +4,7 @@ from . import views
 app_name = 'management'
 urlpatterns = [
     url(r'^admin/$', views.admin, name='admin'),
+    url(r'^admin/student/add/$', views.add, name='add'),
     url(r'^admin/student/(?P<student>[-\w]+)/$', views.student, name='student'),
     url(r'^home/$', views.home, name='home'),
 ]

@@ -5,6 +5,7 @@ from django_tables2 import RequestConfig
 
 from management.models import Students
 from management.tables import StudentsTable
+from management.forms import AddStudentForm
 
 @login_required
 def home(request):
@@ -39,5 +40,24 @@ def student(request, student):
         }
 
         return render(request, 'management/student_home.html', context)
+    else:
+        raise PermissionDenied
+
+@login_required
+def add(request):
+    if request.user.is_admin:
+        title = 'Add new student'
+        form = AddStudentForm(request.POST or None)
+        if request.POST and form.is_valid():
+            student = form.save()
+            form = AddStudentForm()
+            form.is_valid = True
+
+        context = {
+                'form': form,
+                'title':title,
+        }
+
+        return render(request, 'management/forms/add.html', context)
     else:
         raise PermissionDenied

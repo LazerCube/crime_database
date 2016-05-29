@@ -31,13 +31,17 @@
                         <li><label>Date of birth:</label> {{ student.date_of_birth }}</li>
                         <li>
                             <label>Associated account:</label>
-                            {% if request.user.pk != student.account.key.pk %}
-                                <a href="{% url 'accounts:student_account' student.account.key %}">
+                            {% if student.account %}
+                                {% if request.user.pk != student.account.key.pk %}
+                                    <a href="{% url 'accounts:student_account' student.account.key %}">
+                                {% else %}
+                                    <a href="{% url 'accounts:view' %}">
+                                {% endif %}
+                                    {{ student.account }}
+                                </a>
                             {% else %}
-                                <a href="{% url 'accounts:view' %}">
+                                None
                             {% endif %}
-                                {{ student.account }}
-                            </a>
                         </li>
                     </ul>
                 </div>

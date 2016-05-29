@@ -21,28 +21,6 @@ class RegistrationForm(forms.ModelForm):
                                 label="Email",
                             )
 
-    # first_name = forms.CharField(widget=forms.TextInput(
-    #                             attrs={
-    #                             'type': 'text',
-    #                             'class': 'form-control',
-    #                             'placeholder' : 'Forename',
-    #                             'autocomplete' : 'off',
-    #                             }),
-    #                             max_length=35,
-    #                             label="Forename",
-    #                         )
-    #
-    # last_name = forms.CharField(widget=forms.TextInput(
-    #                             attrs={
-    #                             'type': 'text',
-    #                             'class': 'form-control',
-    #                             'placeholder' : 'Surname',
-    #                             'autocomplete' : 'off',
-    #                             }),
-    #                             max_length=35,
-    #                             label="Surname",
-    #                         )
-
     account_code = forms.CharField(widget=forms.TextInput(
                                     attrs={
                                     'type': 'text',
