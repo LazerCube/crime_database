@@ -3,6 +3,7 @@ from django.db import models
 
 from accounts.models import id_generator
 from accounts.models import User
+from extras import get_image_path
 
 class StudentsManager(models.Manager):
     def create(self, f_name, l_name, dob=None):
@@ -17,6 +18,8 @@ class StudentsManager(models.Manager):
 
 class Students(models.Model):
     student_id = models.CharField(max_length=6, null=True, blank=True, unique=True)
+    portrait = models.ImageField(upload_to=get_image_path, default='/static/base/images/defaults/default-portrait.png')
+
     first_name = models.CharField(max_length=35)
     last_name = models.CharField(max_length=35)
     date_of_birth = models.DateField(blank=True, null=True)
@@ -51,23 +54,23 @@ class Students(models.Model):
                 self.student_id = id_generator()
         super(Students, self).save()
 
-class TutorGroups(models.Model):
-    tutor_id = models.CharField(max_length=8)
-    description = models.TextField(max_length=255, null=True,
-                                  blank=False, default="No description given.")
-
-class Units(models.Model):
-    unit_code = models.CharField(max_length=35)
-    name = models.CharField(max_length=255)
-    description = models.TextField("Description", max_length=255, null=True,
-                                    blank=False, default="No description given.")
-
-# class Grades(models.Model):
-#     pass
-
-class Enrollment(models.Model):
-    student = models.ForeignKey(Students)
-    tutor = models.ForeignKey(TutorGroups)
-    created_at = models.DateTimeField(auto_now_add=True, editable=False) #When object was created
-    updated_at = models.DateTimeField(auto_now=True) #When object was last updated
-    #grades = models.ForeignKey(Grades)
+# class TutorGroups(models.Model):
+#     tutor_id = models.CharField(max_length=8)
+#     description = models.TextField(max_length=255, null=True,
+#                                   blank=False, default="No description given.")
+#
+# class Units(models.Model):
+#     unit_code = models.CharField(max_length=35)
+#     name = models.CharField(max_length=255)
+#     description = models.TextField("Description", max_length=255, null=True,
+#                                     blank=False, default="No description given.")
+#
+# # class Grades(models.Model):
+# #     pass
+#
+# class Enrollment(models.Model):
+#     student = models.ForeignKey(Students)
+#     tutor = models.ForeignKey(TutorGroups)
+#     created_at = models.DateTimeField(auto_now_add=True, editable=False) #When object was created
+#     updated_at = models.DateTimeField(auto_now=True) #When object was last updated
+#     #grades = models.ForeignKey(Grades)

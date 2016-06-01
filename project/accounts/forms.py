@@ -1,9 +1,9 @@
 from django import forms
-from accounts.models import User
-from management.models import Students
-
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
+
+from accounts.models import User
+from management.models import Students
 
 class RegistrationForm(forms.ModelForm):
     """
@@ -67,9 +67,9 @@ class RegistrationForm(forms.ModelForm):
 
     def clean_account_code(self):
         account_code = self.cleaned_data['account_code']
-        student = Students.objects.get(student_id=account_code)
         if not Students.objects.filter(student_id=account_code).exists():
             raise forms.ValidationError("Student code doesn't exists.")
+        student = Students.objects.get(student_id=account_code)
         if not student.account is None:
             raise forms.ValidationError("Student already has an account")
         return account_code

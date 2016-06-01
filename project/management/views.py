@@ -47,8 +47,8 @@ def student(request, student):
 def add(request):
     if request.user.is_admin:
         title = 'Add new student'
-        form = AddStudentForm(request.POST or None)
-        if request.POST and form.is_valid():
+        form = AddStudentForm(request.POST or None, request.FILES or None)
+        if request.POST and request.FILES and form.is_valid():
             student = form.save()
             form = AddStudentForm()
             form.is_valid = True

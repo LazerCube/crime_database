@@ -1,7 +1,10 @@
+import StringIO
+
 from django import forms
 from django.forms import extras
 
 from management.models import Students
+from management.extras import make_thumbnail
 
 class AddStudentForm(forms.ModelForm):
     """
@@ -30,21 +33,6 @@ class AddStudentForm(forms.ModelForm):
                                 label="Surname",
                             )
 
-    # date_of_birth = forms.DateInput(
-    #                                 label="Date of birth",
-    #                             )
-
-    # date_of_birth = forms.CharField(widget=forms.TextInput(
-    #                             attrs={
-    #                             'type': 'text',
-    #                             'class': 'form-control',
-    #                             'placeholder' : 'Date of birth',
-    #                             'autocomplete' : 'off',
-    #                             'data-format':"dd-MM-yyyy"
-    #                             }),
-    #                             label="Date of birth",
-    #                         )
-
     date_of_birth = forms.CharField(widget=forms.TextInput(
                                 attrs={
                                 'type': 'text',
@@ -55,12 +43,23 @@ class AddStudentForm(forms.ModelForm):
                                 label="Date of birth",
                             )
 
+    portrait = forms.ImageField(label="Student Portrait",
+                            )
+
     class Meta:
         model = Students
         fields = [  'first_name',
                     'last_name',
                     'date_of_birth',
+                    'portrait',
                 ]
+
+    def clean_portrait(self):
+        portrait_field = self.cleaned_data['portrait']
+        portrait_file = StringIO.StringIO(portrait_field.read())
+
+        portrait_field.file = make_thumbnail(portrait_file)
+        return portrait_field
 
     def save(self, commit=True):
         user = super(AddStudentForm, self).save(commit=False)
