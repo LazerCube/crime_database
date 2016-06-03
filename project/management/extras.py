@@ -10,7 +10,7 @@ def get_image_path(instance, filename):
     return os.path.join('portraits', str(instance.student_id), filename)
 
 def make_thumbnail(file):
-    size = 64, 64
+    size = 256, 256
     img = Image.open(file)
     img.thumbnail((size), Image.ANTIALIAS)
     thumbnailString = StringIO.StringIO()

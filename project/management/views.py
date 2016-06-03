@@ -5,7 +5,7 @@ from django_tables2 import RequestConfig
 
 from management.models import Students
 from management.tables import StudentsTable
-from management.forms import AddStudentForm
+from management.forms import AddStudentForm, DeleteStudentForm
 
 @login_required
 def home(request):
@@ -34,8 +34,13 @@ def admin(request):
 def student(request, student):
     if request.user.is_admin:
         student = get_object_or_404(Students, student_id=student)
+        form = AddStudentForm(request.POST or None, request.FILES or None, instance=student)
+        if request.POST and request.FILES and form.is_valid():
+            student = form.save()
+            form = AddStudentForm(instance=student)
 
         context = {
+            'form': form,
             'student': student,
         }
 
@@ -59,5 +64,25 @@ def add(request):
         }
 
         return render(request, 'management/forms/add.html', context)
+    else:
+        raise PermissionDenied
+
+@login_required
+def delete(request, student):
+    if request.user.is_admin:
+        student = get_object_or_404(Students, student_id=student)
+        title = "Delete Student %s" % (student.get_full_name())
+        form = DeleteStudentForm(request.POST or None, instance=student)
+        if request.POST and form.is_valid():
+            student.delete()
+            return redirect('management:admin')
+
+        context = {
+                'student': student,
+                'form': form,
+                'title':title,
+        }
+
+        return render(request, 'management/forms/delete.html', context)
     else:
         raise PermissionDenied

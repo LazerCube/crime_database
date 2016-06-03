@@ -1,0 +1,32 @@
+{% extends "management/base.html" %}
+{% load staticfiles %}
+
+{% block panel %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Delete student</h3>
+        </div>
+        <div class="panel-body">
+            <h1 class="text-center">
+                Are you sure?<br><small>This action cannot be undone.</small>
+            </h1>
+        </div>
+        <div class="panel-footer">
+            {% block form %}
+            <div class="row">
+                <div class="col-lg-6">
+                    <form action='{% url 'management:delete' student.student_id %}' method="post">
+                        <fieldset>
+                            {% include "accounts/forms/form.html" %}
+                            <button class="btn btn-block btn-danger" type='submit'>Yes, Delete this student</button>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="col-lg-6">
+                    <a href="{% url 'management:student' student.student_id %}" class="btn btn-block btn-primary">No, Go back to student view</a>
+                </div>
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

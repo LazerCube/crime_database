@@ -25,27 +25,56 @@
                     {% endif %}
                 </div>
                 <div class="panel-body">
-                    <ul class="list-unstyled">
-                        <li><label>Name:</label> {{ student }}</li>
-                        <li><label>Student code:</label> {{ student.student_id }}</li>
-                        <li><label>Date of birth:</label> {{ student.date_of_birth }}</li>
-                        <li>
-                            <label>Associated account:</label>
-                            {% if student.account %}
-                                {% if request.user.pk != student.account.key.pk %}
-                                    <a href="{% url 'accounts:student_account' student.account.key %}">
-                                {% else %}
-                                    <a href="{% url 'accounts:view' %}">
-                                {% endif %}
-                                    {{ student.account }}
-                                </a>
-                            {% else %}
-                                None
-                            {% endif %}
-                        </li>
-                        <li><label>Portrait: </label><img src="{{ student.portrait.url }}" alt="student portrait image"></li>
-                    </ul>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <ul class="list-unstyled" style="margin-bottom:0px;">
+                                <li><img src="{{ student.portrait.url }}" alt="student portrait image" width="100%"></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-9">
+                            <ul class="list-unstyled">
+                                <li><label>Name:</label> {{ student }}</li>
+                                <li><label>Student code:</label> {{ student.student_id }}</li>
+                                <li><label>Date of birth:</label> {{ student.date_of_birth }}</li>
+                                <li>
+                                    <label>Associated account:</label>
+                                    {% if student.account %}
+                                        {% if request.user.pk != student.account.key.pk %}
+                                            <a href="{% url 'accounts:student_account' student.account.key %}">
+                                        {% else %}
+                                            <a href="{% url 'accounts:view' %}">
+                                        {% endif %}
+                                            {{ student.account }}
+                                        </a>
+                                    {% else %}
+                                        None
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+                {% if request.user.is_admin %}
+                    <div class="panel-footer clearfix">
+                        <div class="pull-right">
+                            <a href="{% url 'management:delete' student.student_id %}" class="btn btn-sm btn-danger">Delete</a>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal">Edit</button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Edit Information</h4>
+                                        </div>
+                                        {% include "management/forms/edit.html" %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

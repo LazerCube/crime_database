@@ -1,0 +1,16 @@
+{% block form %}
+
+<form action='{% url 'management:student' student.student_id %}' method="post" enctype="multipart/form-data">
+    <fieldset>
+        <div class="modal-body">
+            {% include "accounts/forms/form.html" %}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary" type='submit'>Save changes</button>
+        </div>
+    </fieldset>
+</form>
+{% include "management/forms/datepicker.html" %}
+
+{% endblock %}

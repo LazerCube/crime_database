@@ -6,6 +6,13 @@ from django.forms import extras
 from management.models import Students
 from management.extras import make_thumbnail
 
+class CustomClearableFileInput(forms.ClearableFileInput):
+    template_with_initial = (
+        '<br><a href="%(initial_url)s">%(initial)s</a> '
+        '%(clear_template)s<br><label>%(input_text)s:</label> %(input)s'
+    )
+
+
 class AddStudentForm(forms.ModelForm):
     """
     Form adding a new student.
@@ -43,7 +50,8 @@ class AddStudentForm(forms.ModelForm):
                                 label="Date of birth",
                             )
 
-    portrait = forms.ImageField(label="Student Portrait",
+    portrait = forms.ImageField(widget=CustomClearableFileInput,
+                                label="Student Portrait",
                             )
 
     class Meta:
@@ -66,3 +74,8 @@ class AddStudentForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class DeleteStudentForm(forms.ModelForm):
+    class Meta:
+        model = Students
+        fields = []

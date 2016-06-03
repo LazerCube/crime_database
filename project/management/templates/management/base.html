@@ -11,15 +11,17 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
+            {% block panel %}
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">Add new student</h3>
                 </div>
                 <div class="panel-body">
                     {% block form %}
-                    {% endblock%}
+                    {% endblock %}
                 </div>
             </div>
+            {% endblock %}
         </div>
     </div>
 {% endblock%}
