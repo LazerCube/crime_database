@@ -8,6 +8,14 @@ from management.tables import StudentsTable
 from management.forms import AddStudentForm, DeleteStudentForm
 
 @login_required
+def index(request):
+    if request.user.is_admin:
+
+        return redirect('management:admin')
+    else:
+        return redirect('management:home')
+
+@login_required
 def home(request):
     student = get_object_or_404(Students, account=request.user)
 
