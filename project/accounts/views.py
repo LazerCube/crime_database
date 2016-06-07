@@ -62,7 +62,6 @@ def login(request):
         if request.POST and form.is_valid():
             user = form.login(request)
             if user:
-                print("USER")
                 auth_login(request, user)
                 return redirect('accounts:view')
 

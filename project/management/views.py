@@ -5,12 +5,12 @@ from django_tables2 import RequestConfig
 
 from management.models import Students
 from management.tables import StudentsTable
-from management.forms import AddStudentForm, DeleteStudentForm
+from management.forms import AddStudentForm
+from management.forms import DeleteStudentForm
 
 @login_required
 def index(request):
     if request.user.is_admin:
-
         return redirect('management:admin')
     else:
         return redirect('management:home')
@@ -22,7 +22,11 @@ def home(request):
     context = {
             'student': student,
     }
+
     return render(request, 'management/student_home.html', context)
+    # response = render(request, 'management/student_home.html', context)
+    # response.set_cookie("cookie_example",1)
+    # return response
 
 @login_required
 def admin(request):
