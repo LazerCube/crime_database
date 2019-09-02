@@ -1,6 +1,8 @@
-# Education Management Application - College work
+# Education Management Website Application - College work
 
 ![Image of application. Showing admin home page with table of students](https://i.imgur.com/t0VCn5c.png)
+
+## About
 
 Was written as part of a web server scriping module while I was a college and had to meet this specification:
 
