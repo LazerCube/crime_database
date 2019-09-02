@@ -1,4 +1,4 @@
-# Education Management Website Application - College work
+# Education Management Application - College work
 
 ![Image of application. Showing admin home page with table of students](https://i.imgur.com/t0VCn5c.png)
 
